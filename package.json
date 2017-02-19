@@ -1,12 +1,12 @@
 {
-  "name": "transfermarkt",
+  "name": "nerdkugelBOT",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "startBot": "nodemon bot.js"
   },
-  "author": "",
+  "author": "Daniel Weber",
   "license": "ISC",
   "devDependencies": {
     "html-parser": "^0.10.0",
