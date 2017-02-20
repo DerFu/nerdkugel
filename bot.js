@@ -70,6 +70,7 @@ var http = require('http'),
                             return JSON.stringify(x);
                         });
 
+                        // testing: yesterday = [];
                         var fiP = _.map(_.difference(today, yesterday), function(x) {
                             return JSON.parse(x);
                         });
@@ -127,16 +128,25 @@ var http = require('http'),
         var postTweet = function(items) {
             var T = new Twit(config);
             console.log(items.length)
-            items.forEach(item => T.post('statuses/update', {
-                status: item
-            }, function(err, data, response) {
-                console.warn(item)
-            }))
+
+            if (items.length > 0) {
+                items.forEach(item => T.post('statuses/update', {
+                    status: item
+                }, function(err, data, response) {
+                    console.warn('tweete: ', item)
+                }))
+            } else {
+                T.post('statuses/update', {
+                    status: 'Keine neuen Verletzten (puh!) '
+                }, function(err, data, response) {
+                    console.warn('Keine neuen Verletzten (puh!) ')
+                })
+            }
         };
     }
 
     doit();
-    cron.schedule('1 * * * *', function() {
+    cron.schedule('*/2 * * * *', function() {
         console.log('running a task five minute');
         doit();
     });
