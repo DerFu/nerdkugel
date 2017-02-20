@@ -1,13 +1,20 @@
 module.exports = {
     '1.FC Köln': {
         'twitter': '@effzeh',
+        'hashtags': '#effzeh',
         'nickFans': 'Geißböcke'
     },
     'Bayern München': {
-        'twitter': '@effzeh'
+        'twitter': '@FCBayern',
+        'hashtags': '#effzeh'
     },
     'Hamburger SV': {
-        'twitter': '@hsv'
+        'twitter': '@hsv',
+        'hashtags': '#bvb'
+    },
+    'Borussia Dortmund': {
+        'twitter': '@BVB',
+        'hashtags': '#bvb'
     }
 
 }

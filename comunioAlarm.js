@@ -1,21 +1,29 @@
-console.log('app running')
+var dev = true;
+
 var http = require('http'),
     fs = require('fs'),
     jsdom = require("jsdom"),
-    winston = require("winston"),
+    //winston = require("winston"),
     moment = require("moment"),
     jquery = fs.readFileSync("./node_modules/jquery/dist/jquery.min.js", "utf-8"),
     $ = require("jquery"),
-    Q = require("q"),
+    //Q = require("q"),
     cron = require('node-cron'),
     Twit = require('twit'),
-    config = require('./config/config'),
     clubInfos = require('./config/clubInfos'),
     _ = require('underscore');
 
+if (dev) {
+    console.log('app running in dev mode');
+    var config = require('./config/config.default.js');
+} else {
+    console.log('app running in live mode');
+    var config = require('./config/config');
+}
+
 (function() {
 
-    var doit = function() {
+    var comunioAlarm = function() {
         console.log('i do it')
 
         "use strict";
@@ -69,8 +77,9 @@ var http = require('http'),
                         var yesterday = _.map(yesterday, function(x) {
                             return JSON.stringify(x);
                         });
-
-                        // testing: yesterday = [];
+                        (dev)
+                            ? yesterday = []
+                            : dev;
                         var fiP = _.map(_.difference(today, yesterday), function(x) {
                             return JSON.parse(x);
                         });
@@ -112,15 +121,15 @@ var http = require('http'),
             var enchantDate = function(date) {
                 date = moment(date, "DD-MM-YYYY");
                 if (!date.isValid()) {
-                    return 'ist verletzt'
+                    return 'fällt aus'
                 } else {
-                    return 'ist bis zum ' + moment(date).format('DD.MM.') + ' verletzt';
+                    return 'fällt bis zum ' + moment(date).format('DD.MM.') + ' aus';
                 }
             }
             var createHashtag = function() {
                 // push good hashtags
             }
-            items.forEach(item => bT.push(item.name + ' (' + item.verein + ') ' + enchantDate(item.bis) + enchantClub(item.verein)))
+            items.forEach(item => bT.push(item.name + ' (' + item.verein + ') ' + enchantDate(item.bis) + enchantClub(item.verein) + ' #comunio #comunioAlarm'))
             return postTweet(bT);
         };
 
@@ -131,13 +140,13 @@ var http = require('http'),
 
             if (items.length > 0) {
                 items.forEach(item => T.post('statuses/update', {
-                    status: item
+                    status: '🤕 ' + item
                 }, function(err, data, response) {
-                    console.warn('tweete: ', item)
+                    console.warn('(' + item.length + ')tweete: ', item)
                 }))
             } else {
                 T.post('statuses/update', {
-                    status: 'Keine neuen Verletzten (puh!) '
+                    status: '⚽️ Keine neuen Verletzten (puh!) '
                 }, function(err, data, response) {
                     console.warn('Keine neuen Verletzten (puh!) ')
                 })
@@ -145,10 +154,13 @@ var http = require('http'),
         };
     }
 
-    doit();
-    cron.schedule('*/2 * * * *', function() {
-        console.log('running a task five minute');
-        doit();
+    comunioAlarm();
+    var minute = 10;
+    cron.schedule('*/' + minute + ' * * * *', function() {
+        console.log('running a task every ' + minute + ' minutes');
+        comunioAlarm();
+        minute = Math.floor((Math.random() * 10) + 1);
+
     });
 
 })();

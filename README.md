@@ -6,5 +6,7 @@ tweet injured players (sell'em!)
 
 ## todo
 * auto. hastags
-* complete twitter list
+* complete twitter-Account list
+* get player social media channels
 * other services
+* aufräumen
