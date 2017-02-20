@@ -8,7 +8,8 @@
   },
   "author": "Daniel Weber",
   "license": "ISC",
-  "devDependencies": {
+  "devDependencies": {},
+  "dependencies": {
     "html-parser": "^0.10.0",
     "html2json": "^1.0.2",
     "htmlparser": "^1.7.7",
@@ -16,16 +17,15 @@
     "jsdom": "^9.10.0",
     "lodash": "^4.17.4",
     "minify": "^2.0.13",
+    "moment": "^2.17.1",
+    "node-cron": "^1.1.3",
     "node-fetch": "^1.6.3",
     "parse5": "^3.0.1",
+    "q": "^1.4.1",
     "sanitize-html": "^1.14.1",
     "twit": "^2.2.5",
     "twitter": "^1.7.0",
     "underscore": "^1.8.3",
     "winston": "^2.3.1"
-  },
-  "dependencies": {
-    "moment": "^2.17.1",
-    "q": "^1.4.1"
   }
 }
